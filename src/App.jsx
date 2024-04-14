@@ -6,10 +6,7 @@ import { Link, Route } from "wouter";
 
 const App = () => (
   <div>
-    <Link href="/users/John">
-      <a className="link">My Account</a>
-    </Link>
-
+    <Link href="/users/John">My Account</Link>
     <Route path="/inbox" component={Counter} />
     <Route path="/settings">Settings</Route>
     <Route path="/users/:name">
