@@ -1,8 +1,16 @@
 import { useState } from "react";
 import { Redirect } from "wouter";
+import { useDispatch } from "react-redux";
+
 import { signUpApiCall } from "../utility/api";
+import {
+  setJwtToken,
+  setUserDetails,
+} from "../features/counter/user/userSlice";
 
 const SignUp = () => {
+  const dispatch = useDispatch();
+
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,10 +23,12 @@ const SignUp = () => {
 
     try {
       const postData = { username, email, password };
-      await signUpApiCall(postData);
       setIsSuccessfulSignUp(true);
-      setHasError(false);
-      setErrorMsg("");
+
+      const token = await signUpApiCall(postData);
+      console.log(token);
+      dispatch(setJwtToken(token));
+      dispatch(setUserDetails({ username, email }));
       //TODO: Set user auth token in redux state
     } catch (error) {
       setHasError(true);
@@ -123,16 +133,6 @@ const SignUp = () => {
               </button>
             </div>
           </form>
-
-          <p className="mt-10 text-center text-sm text-gray-500">
-            Not a member?{" "}
-            <a
-              href="#"
-              className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-            >
-              Start a 14 day free trial
-            </a>
-          </p>
         </div>
       </div>
     </>
