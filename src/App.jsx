@@ -15,7 +15,7 @@ const App = () => (
     <Route path="/" component={HomePage} />
     <Route path="/sign-in" component={SignIn}></Route>
     <Route path="/sign-up" component={SignUp}></Route>
-    <Route path="/inbox" component={Counter} />
+    <Route path="/counter" component={Counter} />
     <Route path="/settings">Settings</Route>
     <Route path="/users/:name">
       {(params) => <div>Hello, {params.name}!</div>}

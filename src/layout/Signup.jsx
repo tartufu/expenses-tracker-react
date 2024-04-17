@@ -26,10 +26,13 @@ const SignUp = () => {
       setIsSuccessfulSignUp(true);
 
       const token = await signUpApiCall(postData);
-      console.log(token);
+      const authToken = {
+        access: token.data.access,
+        refresh: token.data.refresh,
+      };
       dispatch(setJwtToken(token));
       dispatch(setUserDetails({ username, email }));
-      //TODO: Set user auth token in redux state
+      localStorage.setItem("authTokens", JSON.stringify(authToken));
     } catch (error) {
       setHasError(true);
       setErrorMsg(error.toString());

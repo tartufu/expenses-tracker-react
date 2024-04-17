@@ -8,12 +8,11 @@ export function Counter() {
   const dispatch = useDispatch();
 
   // to build as an utility function later
-  const isUserLoggedIn = true;
+  const isUserLoggedIn = useSelector((state) => state.user.token.access);
 
-  let shouldRedirect = isUserLoggedIn ? false : true;
   return (
     <>
-      {shouldRedirect && <Redirect to="/" />}
+      {!isUserLoggedIn && <Redirect to="/" />}
       <div>
         <div>
           <button

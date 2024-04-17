@@ -1,13 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const getToken = (type) => {
+  return localStorage.getItem("authTokens")
+    ? JSON.parse(localStorage.getItem("authTokens"))[type]
+    : null;
+};
+
 export const userSlice = createSlice({
   name: "user",
   initialState: {
     username: "",
     email: "",
     token: {
-      access: "",
-      refresh: "",
+      access: getToken("access"),
+      refresh: getToken("refresh"),
     },
   },
   reducers: {

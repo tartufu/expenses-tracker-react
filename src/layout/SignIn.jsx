@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "wouter";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { signInApiCall } from "../utility/api";
 import {
@@ -8,8 +8,11 @@ import {
   setUserDetails,
 } from "../features/counter/user/userSlice";
 
+import { Redirect } from "wouter";
+
 const SignIn = () => {
   const dispatch = useDispatch();
+  const isUserLoggedIn = useSelector((state) => state.user.token.access);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -26,10 +29,13 @@ const SignIn = () => {
       const email = token.data.email;
       setIsSuccessfulSignIn(true);
 
-      console.log("token", token);
-      //TODO: Set user auth token in redux state
+      const authToken = {
+        access: token.data.access,
+        refresh: token.data.refresh,
+      };
       dispatch(setJwtToken(token));
       dispatch(setUserDetails({ username, email }));
+      localStorage.setItem("authTokens", JSON.stringify(authToken));
     } catch (error) {
       console.log("ERROR", error);
       error.name = "";
@@ -40,6 +46,7 @@ const SignIn = () => {
 
   return (
     <>
+      {isUserLoggedIn && <Redirect to="/" />}
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         {isSuccesfulSignIn && <p className="text-center"> asdasdasdas </p>}
 
