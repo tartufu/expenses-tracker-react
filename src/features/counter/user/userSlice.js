@@ -26,9 +26,16 @@ export const userSlice = createSlice({
       state.username = action.payload.username;
       state.email = action.payload.email;
     },
+
+    clearJwtToken: (state) => {
+      console.log(234234234234);
+      state.token.access = null;
+      state.token.refresh = null;
+      localStorage.removeItem("authTokens");
+    },
   },
 });
 
-export const { setJwtToken, setUserDetails } = userSlice.actions;
+export const { setJwtToken, setUserDetails, clearJwtToken } = userSlice.actions;
 
 export default userSlice.reducer;
