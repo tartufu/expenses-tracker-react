@@ -20,11 +20,13 @@ export default function NavBar() {
           </Link>
         </div>
         <ul className="flex">
-          <li className="mr-4">
-            <Link to="/sign-in">
-              <span className="text-white">Profile</span>
-            </Link>
-          </li>
+          {isUserLoggedIn && (
+            <li className="mr-4">
+              <Link to="/sign-in">
+                <span className="text-white">Profile</span>
+              </Link>
+            </li>
+          )}
 
           <li>
             {isUserLoggedIn ? (
