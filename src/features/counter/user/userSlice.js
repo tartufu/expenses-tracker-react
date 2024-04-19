@@ -18,8 +18,14 @@ export const userSlice = createSlice({
   },
   reducers: {
     setJwtToken: (state, action) => {
-      state.token.access = action.payload.data.access;
-      state.token.refresh = action.payload.data.refresh;
+      console.log("ACTION", action);
+
+      const { access, refresh } = action.payload.data;
+      state.token.access = access;
+      state.token.refresh = refresh;
+
+      const authToken = { access, refresh };
+      localStorage.setItem("authTokens", JSON.stringify(authToken));
     },
 
     setUserDetails: (state, action) => {
@@ -28,7 +34,6 @@ export const userSlice = createSlice({
     },
 
     clearJwtToken: (state) => {
-      console.log(234234234234);
       state.token.access = null;
       state.token.refresh = null;
       localStorage.removeItem("authTokens");

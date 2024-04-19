@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 const StatBox = ({ title, value, textColor }) => {
   return (
-    <div className="stats shadow p-4">
+    <div className="stats shadow p-4 col-span-4">
       <div className="stat">
         <div className="stat-title text-center">Total {title}</div>
         <div className={`stat-value text-center ${textColor}`}>${value}</div>
