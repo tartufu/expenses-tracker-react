@@ -18,8 +18,6 @@ const UserDashBoard = ({ params }) => {
 
   const isUserLoggedIn = useSelector((state) => state.user.token.access);
 
-  console.log(isUserLoggedIn);
-
   return (
     <>
       <div className="flex items-start space-x-8">

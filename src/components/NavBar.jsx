@@ -3,9 +3,17 @@ import { Link } from "wouter";
 import { useSelector, useDispatch } from "react-redux";
 import { clearJwtToken } from "../features/counter/user/userSlice";
 
+import HomePageLogo from "../assets/logo-favicon-white.svg?react";
+
 export default function NavBar() {
   const isUserLoggedIn = useSelector((state) => state.user.token.access);
   const dispatch = useDispatch();
+
+  const userDashboardUrl = `/${useSelector(
+    (state) => state.user.username
+  )}/dashboard`;
+
+  console.log(userDashboardUrl);
 
   const logoutBtnHandler = () => {
     dispatch(clearJwtToken());
@@ -16,13 +24,14 @@ export default function NavBar() {
       <div className="mx-auto flex justify-between items-center">
         <div className="text-white font-bold">
           <Link to="/">
-            <span className="text-white">Home</span>
+            <HomePageLogo className="mx-auto h-10 w-auto" />
+            {/* <span className="text-white">Home</span> */}
           </Link>
         </div>
         <ul className="flex">
           {isUserLoggedIn && (
             <li className="mr-4">
-              <Link to="/sign-in">
+              <Link to={userDashboardUrl}>
                 <span className="text-white">Profile</span>
               </Link>
             </li>

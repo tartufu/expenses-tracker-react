@@ -11,7 +11,7 @@ import UserDashBoard from "./layout/UserDashBoard";
 import Footer from "./components/Footer";
 
 const App = () => (
-  <div>
+  <div className="min-h-screen">
     <NavBar />
     <Route path="/" component={HomePage} />
     <Route path="/sign-in" component={SignIn}></Route>

@@ -1,4 +1,8 @@
+import { useSelector } from "react-redux";
+
 const SideBar = () => {
+  const username = useSelector((state) => state.user.username);
+  const email = useSelector((state) => state.user.email);
   return (
     <aside className="flex flex-col w-64 h-screen px-4 py-8 overflow-y-auto bg-white border-r rtl:border-r-0 rtl:border-l dark:bg-gray-900 dark:border-gray-700">
       <a href="#" className="mx-auto">
@@ -16,10 +20,10 @@ const SideBar = () => {
           alt="avatar"
         />
         <h4 className="mx-2 mt-2 font-medium text-gray-800 dark:text-gray-200">
-          John Doe
+          {username}
         </h4>
         <p className="mx-2 mt-1 text-sm font-medium text-gray-600 dark:text-gray-400">
-          john@example.com
+          {email}
         </p>
       </div>
 
@@ -98,7 +102,7 @@ const SideBar = () => {
             <span className="mx-4 font-medium">Tickets</span>
           </a>
 
-          <a
+          {/* <a
             className="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
             href="#"
           >
@@ -125,7 +129,7 @@ const SideBar = () => {
             </svg>
 
             <span className="mx-4 font-medium">Settings</span>
-          </a>
+          </a> */}
         </nav>
       </div>
     </aside>

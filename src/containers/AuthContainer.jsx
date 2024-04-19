@@ -16,6 +16,7 @@ const AuthContainer = ({ children }) => {
   const dispatch = useDispatch();
 
   const isAccessTokenExpired = (accessToken) => {
+    if (!accessToken) return;
     const tokenData = decodeJwtToken(accessToken);
 
     const { exp } = tokenData;
