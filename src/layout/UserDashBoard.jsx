@@ -9,13 +9,6 @@ import Button from "../components/Button";
 const UserDashBoard = ({ params }) => {
   console.log(params.user);
 
-  //   const [username, setUsername] = useState("");
-
-  //   useEffect(() => {
-  //     // alert("PING");
-  //     setUsername(params.user);
-  //   }, []);
-
   const isUserLoggedIn = useSelector((state) => state.user.token.access);
 
   return (
