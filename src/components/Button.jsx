@@ -1,15 +1,8 @@
 import PropTypes from "prop-types";
 
-import { getUserDetails } from "../utility/api";
-
 import PlusSymbol from "../assets/plusSymbol.svg?react";
 
-const Button = ({ text, accessToken }) => {
-  const submitBtnHandler = async () => {
-    alert("!", accessToken);
-    console.log(accessToken);
-    await getUserDetails(accessToken);
-  };
+const Button = ({ text, submitBtnHandler }) => {
   return (
     <>
       <button
@@ -27,5 +20,5 @@ export default Button;
 
 Button.propTypes = {
   text: PropTypes.string.isRequired,
-  accessToken: PropTypes.string.isRequired,
+  submitBtnHandler: PropTypes.func.isRequired,
 };
