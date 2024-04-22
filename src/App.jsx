@@ -10,6 +10,8 @@ import NavBar from "./components/NavBar";
 import UserDashBoard from "./layout/UserDashBoard";
 import Footer from "./components/Footer";
 
+import ProtectedRoutes from "./containers/ProtectedRoutes";
+
 const App = () => (
   <div className="min-h-screen">
     <NavBar />
@@ -17,8 +19,13 @@ const App = () => (
     <Route path="/sign-in" component={SignIn}></Route>
     <Route path="/sign-up" component={SignUp}></Route>
     <Route path="/counter" component={Counter} />
-    <Route path="/settings">Settings</Route>
-    <Route path="/:user/dashboard" component={UserDashBoard} />
+
+    {/* Route Auth */}
+    <ProtectedRoutes>
+      <Route path="/settings">Settings</Route>
+      <Route path="/:user/dashboard" component={UserDashBoard} />
+    </ProtectedRoutes>
+
     <Footer />
   </div>
 );

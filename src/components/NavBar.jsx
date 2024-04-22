@@ -1,4 +1,4 @@
-import { Link, Redirect } from "wouter";
+import { Link } from "wouter";
 
 import { useSelector, useDispatch } from "react-redux";
 import { clearJwtToken } from "../features/counter/user/userSlice";
@@ -21,7 +21,6 @@ export default function NavBar() {
 
   return (
     <>
-      {!isUserLoggedIn && <Redirect to="/" />}
       <nav className="bg-gray-800 p-4">
         <div className="mx-auto flex justify-between items-center">
           <div className="text-white font-bold">
