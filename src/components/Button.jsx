@@ -2,15 +2,15 @@ import PropTypes from "prop-types";
 
 import PlusSymbol from "../assets/plusSymbol.svg?react";
 
-const Button = ({ text, submitBtnHandler }) => {
+const Button = ({ buttonText, clickBtnHandler }) => {
   return (
     <>
       <button
-        className="btn btn-wide btn-success text-white"
-        onClick={submitBtnHandler}
+        className="btn btn-wide btn-success text-white mr-4"
+        onClick={clickBtnHandler}
       >
         <PlusSymbol />
-        {text}
+        {buttonText}
       </button>
     </>
   );
@@ -19,6 +19,6 @@ const Button = ({ text, submitBtnHandler }) => {
 export default Button;
 
 Button.propTypes = {
-  text: PropTypes.string.isRequired,
-  submitBtnHandler: PropTypes.func.isRequired,
+  buttonText: PropTypes.string.isRequired,
+  clickBtnHandler: PropTypes.func.isRequired,
 };

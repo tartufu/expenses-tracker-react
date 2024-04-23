@@ -5,8 +5,11 @@ import { useSelector } from "react-redux";
 import Sidebar from "../components/SideBar";
 import StatBox from "../components/StatBox";
 import Button from "../components/Button";
+import Modal from "../components/Modal";
 
-import { addUserIncome, getUserIncome } from "../utility/expenses/expenses-api";
+import Transaction from "../components/forms/Transaction";
+
+import { getUserIncome } from "../utility/expenses/expenses-api";
 
 const UserDashBoard = ({ params }) => {
   const { user } = params;
@@ -14,19 +17,14 @@ const UserDashBoard = ({ params }) => {
   console.log(user);
 
   const [totalIncome, setTotalIncome] = useState(0);
+  const [totalExpense, setTotalExpense] = useState(3455);
+  const [totalBalance, setTotalBalance] = useState(3455);
+
+  const [open, setOpen] = useState(false);
 
   // const [amount, setAmount] = useState(0);
-  const amount = 6750;
 
   const accessToken = useSelector((state) => state.user.token.access);
-
-  const submitBtnHandler = () => {
-    alert("PING!");
-  };
-
-  const submitIncomeBtnHandler = () => {
-    addUserIncome(params.user, amount, accessToken);
-  };
 
   useEffect(() => {
     (async () => {
@@ -34,8 +32,16 @@ const UserDashBoard = ({ params }) => {
       setTotalIncome(getTotalIncome.data.amount);
     })();
 
+    // add in call later to get totalExpenses
+
+    setTotalExpense(5623);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    setTotalBalance(totalIncome - totalExpense);
+  }, [totalIncome, totalExpense]);
 
   return (
     <>
@@ -44,27 +50,40 @@ const UserDashBoard = ({ params }) => {
         <div className="flex flex-col items-start">
           <div className="mt-4">
             <Button
-              text="Add Transaction"
+              buttonText="Add Income"
               styling=""
-              submitBtnHandler={submitBtnHandler}
+              clickBtnHandler={() => {
+                setOpen(!open);
+              }}
+            />
+
+            <Button
+              buttonText="Add Expense"
+              styling=""
+              clickBtnHandler={() => {
+                setOpen(!open);
+              }}
             />
           </div>
+
           <div className="flex space-x-8 mt-4">
             <StatBox
               title="Income"
               value={totalIncome}
               textColor="text-green-500"
             />
-            <StatBox title="Expenses" value={3434} textColor="text-red-500" />
-            <StatBox title="Balance" value={1066} />
+            <StatBox
+              title="Expenses"
+              value={totalExpense}
+              textColor="text-red-500"
+            />
+            <StatBox title="Balance" value={totalBalance} />
           </div>
-        </div>
 
-        <Button
-          text="Add Expense"
-          styling=""
-          submitBtnHandler={submitIncomeBtnHandler}
-        />
+          <Modal open={open} onClose={() => setOpen(false)}>
+            <Transaction />
+          </Modal>
+        </div>
       </div>
     </>
   );
