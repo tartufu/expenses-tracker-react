@@ -9,7 +9,7 @@ const getToken = (type) => {
 export const userSlice = createSlice({
   name: "user",
   initialState: {
-    username: "",
+    username: localStorage.getItem("username") || null,
     email: "",
     token: {
       access: getToken("access"),

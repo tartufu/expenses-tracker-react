@@ -38,6 +38,7 @@ const SignIn = () => {
       dispatch(setJwtToken(token));
       dispatch(setUserDetails({ username, email }));
       localStorage.setItem("authTokens", JSON.stringify(authToken));
+      localStorage.setItem("username", username);
     } catch (error) {
       console.log("ERROR", error);
       error.name = "";

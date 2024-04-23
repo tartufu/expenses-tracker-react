@@ -9,6 +9,8 @@ export default function NavBar() {
   const isUserLoggedIn = useSelector((state) => state.user.token.access);
   const dispatch = useDispatch();
 
+  console.log(useSelector((state) => state.user.username));
+
   const userDashboardUrl = `/${useSelector(
     (state) => state.user.username
   )}/dashboard`;

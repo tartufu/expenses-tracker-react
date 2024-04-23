@@ -35,6 +35,7 @@ const SignUp = () => {
       dispatch(setJwtToken(token));
       dispatch(setUserDetails({ username, email }));
       localStorage.setItem("authTokens", JSON.stringify(authToken));
+      localStorage.setItem("username", username);
     } catch (error) {
       setHasError(true);
       setErrorMsg(error.toString());
