@@ -50,16 +50,8 @@ const UserDashBoard = ({ params }) => {
         <div className="flex flex-col items-start">
           <div className="mt-4">
             <Button
-              buttonText="Add Income"
-              styling=""
-              clickBtnHandler={() => {
-                setOpen(!open);
-              }}
-            />
-
-            <Button
-              buttonText="Add Expense"
-              styling=""
+              buttonText="Add Transaction"
+              className="btn btn-wide btn-success text-white mr-4"
               clickBtnHandler={() => {
                 setOpen(!open);
               }}

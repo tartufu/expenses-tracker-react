@@ -1,20 +1,46 @@
+import TextInput from "../TextInput";
+import SelectInput from "../SelectInput";
+import Button from "../Button";
+import DatepickerInput from "../DatepickerInput";
+
 const Transaction = () => {
+  const transactionTypeArr = ["Income", "Expenses"];
+  const expensesTypeArr = ["One", "Two", "Three"];
+
   return (
-    <div className="text-center w-6/12">
+    <div>
       <div className="mx-auto my-4 w-96">
-        <h3 className="text-lg font-black text-gray-800">Confirm Delete</h3>
-        <p className="text-sm text-gray-500">
-          Are you sure you want to delete this item?
-        </p>
+        <h3 className="text-lg font-black text-gray-800 text-center">
+          Add Transaction
+        </h3>
       </div>
-      <div className="flex gap-4">
-        <button className="btn btn-danger w-full">Delete</button>
-        <button className="btn btn-light w-full" onClick={() => alert("close")}>
-          Cancel
-        </button>
-      </div>
+      <form>
+        <div className="space-y-12">
+          <div className="border-b border-gray-900/10 pb-12">
+            <SelectInput label="Type" options={transactionTypeArr} />
+            <SelectInput label="Category" options={expensesTypeArr} />
+            <DatepickerInput />
+            <TextInput label="Amount" />
+            <TextInput label="Notes" />
+            <TextInput label="Label" />
+            <div className="mt-4 flex justify-end">
+              <Button
+                buttonText="Submit"
+                className="btn btn-success text-white"
+              />
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
   );
 };
 
 export default Transaction;
+
+// category
+// date
+// notes
+// label
+// amount
+// submit btn
