@@ -37,10 +37,3 @@ const Transaction = () => {
 };
 
 export default Transaction;
-
-// category
-// date
-// notes
-// label
-// amount
-// submit btn

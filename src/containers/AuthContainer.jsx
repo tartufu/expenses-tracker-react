@@ -2,9 +2,12 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 
-import { refreshTokenCall } from "../utility/api";
+import { refreshTokenCall, getUserDetails } from "../utility/api";
 
-import { setJwtToken } from "../features/counter/user/userSlice";
+import {
+  setJwtToken,
+  setUserDetails,
+} from "../features/counter/user/userSlice";
 import { decodeJwtToken } from "../utility/helperFuncs";
 
 import PropTypes from "prop-types";
@@ -43,6 +46,16 @@ const AuthContainer = ({ children }) => {
         const newToken = await refreshTokenCall(accessToken, refreshToken);
         dispatch(setJwtToken({ data: newToken }));
       };
+    } else {
+      const tokenData = decodeJwtToken(accessToken);
+      const userId = tokenData.user_id;
+
+      (async () => {
+        const response = await getUserDetails(accessToken, userId);
+        dispatch(setUserDetails(response.data.data));
+      })();
+
+      console.log(userId);
     }
   }, []);
 

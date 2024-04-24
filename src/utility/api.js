@@ -42,7 +42,7 @@ export const refreshTokenCall = async (accessToken, refreshToken) => {
   }
 };
 
-export const getUserDetails = async (token) => {
+export const getUserDetails = async (token, userId) => {
   const header = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -50,9 +50,10 @@ export const getUserDetails = async (token) => {
   };
   try {
     const response = await axios.get(
-      `${baseUrl}/get-user-details/foo/`,
+      `${baseUrl}/get-user-details/${userId}/`,
       header
     );
+
     return response;
   } catch (error) {
     console.log(error);
