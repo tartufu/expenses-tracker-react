@@ -3,10 +3,7 @@ import { Link } from "wouter";
 import { useSelector, useDispatch } from "react-redux";
 
 import { signInApiCall } from "../utility/api";
-import {
-  setJwtToken,
-  setUserDetails,
-} from "../features/counter/user/userSlice";
+import { setJwtToken, setUserDetails } from "../features/user/userSlice";
 
 import { Redirect } from "wouter";
 

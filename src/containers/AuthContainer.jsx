@@ -4,10 +4,7 @@ import { useEffect } from "react";
 
 import { refreshTokenCall, getUserDetails } from "../utility/api";
 
-import {
-  setJwtToken,
-  setUserDetails,
-} from "../features/counter/user/userSlice";
+import { setJwtToken, setUserDetails } from "../features/user/userSlice";
 import { decodeJwtToken } from "../utility/helperFuncs";
 
 import PropTypes from "prop-types";

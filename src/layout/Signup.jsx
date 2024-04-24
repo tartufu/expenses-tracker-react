@@ -3,10 +3,7 @@ import { Redirect } from "wouter";
 import { useDispatch } from "react-redux";
 
 import { signUpApiCall } from "../utility/api";
-import {
-  setJwtToken,
-  setUserDetails,
-} from "../features/counter/user/userSlice";
+import { setJwtToken, setUserDetails } from "../features/user/userSlice";
 
 import Logo from "../assets/logo.svg?react";
 

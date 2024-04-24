@@ -1,7 +1,7 @@
 import { Link } from "wouter";
 
 import { useSelector, useDispatch } from "react-redux";
-import { clearJwtToken } from "../features/counter/user/userSlice";
+import { clearJwtToken } from "../features/user/userSlice";
 
 import HomePageLogo from "../assets/logo-favicon-white.svg?react";
 
