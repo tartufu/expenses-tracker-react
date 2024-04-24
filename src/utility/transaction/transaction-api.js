@@ -43,3 +43,13 @@ export const getUserIncome = async (user, accessToken) => {
     throw new Error(errMsg);
   }
 };
+
+export const getTransactionTypes = async () => {
+  try {
+    const response = await axios.get(`${baseUrl}/get-transaction-types`);
+    return response.data;
+  } catch (error) {
+    const errMsg = error.response.data.error;
+    throw new Error(errMsg);
+  }
+};

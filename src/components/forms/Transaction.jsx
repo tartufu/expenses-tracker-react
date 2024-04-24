@@ -3,9 +3,12 @@ import SelectInput from "../SelectInput";
 import Button from "../Button";
 import DatepickerInput from "../DatepickerInput";
 
+import { useSelector } from "react-redux";
+
+import { transactionTypesArr } from "../../utility/constants";
+
 const Transaction = () => {
-  const transactionTypeArr = ["Income", "Expenses"];
-  const expensesTypeArr = ["One", "Two", "Three"];
+  const categoryTypesArr = useSelector((state) => state.transaction.type);
 
   return (
     <div>
@@ -17,8 +20,8 @@ const Transaction = () => {
       <form>
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
-            <SelectInput label="Type" options={transactionTypeArr} />
-            <SelectInput label="Category" options={expensesTypeArr} />
+            <SelectInput label="Type" options={transactionTypesArr} />
+            <SelectInput label="Category" options={categoryTypesArr} />
             <DatepickerInput />
             <TextInput label="Amount" />
             <TextInput label="Notes" />
@@ -27,6 +30,10 @@ const Transaction = () => {
               <Button
                 buttonText="Submit"
                 className="btn btn-success text-white"
+                clickBtnHandler={(e) => {
+                  e.preventDefault();
+                  alert("PING");
+                }}
               />
             </div>
           </div>

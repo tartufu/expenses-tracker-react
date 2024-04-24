@@ -9,7 +9,7 @@ import Modal from "../components/Modal";
 
 import Transaction from "../components/forms/Transaction";
 
-import { getUserIncome } from "../utility/expenses/expenses-api";
+import { getUserIncome } from "../utility/transaction/transaction-api";
 
 const UserDashBoard = ({ params }) => {
   const { user } = params;
