@@ -4,11 +4,28 @@ import Button from "../Button";
 import DatepickerInput from "../DatepickerInput";
 
 import { useSelector } from "react-redux";
+import { useState, useEffect } from "react";
 
 import { transactionTypesArr } from "../../utility/constants";
 
 const Transaction = () => {
   const categoryTypesArr = useSelector((state) => state.transaction.type);
+  const [type, setType] = useState("");
+  const [filterCatArr, setFilterCatArr] = useState([]);
+
+  const transactionTypeSelectHandler = (e) => {
+    alert(e.target.value);
+    setType(e.target.value);
+  };
+
+  useEffect(() => {
+    const filteredCategoryArr = categoryTypesArr.filter(
+      (category) => category.transaction_type === type.toUpperCase()
+    );
+    setFilterCatArr(filteredCategoryArr);
+  }, [type]);
+
+  const categoryTypeSelectHandler = (e) => alert(e.target.value);
 
   return (
     <div>
@@ -20,8 +37,17 @@ const Transaction = () => {
       <form>
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
-            <SelectInput label="Type" options={transactionTypesArr} />
-            <SelectInput label="Category" options={categoryTypesArr} />
+            <SelectInput
+              label="Type"
+              options={transactionTypesArr}
+              onChangeHandler={(e) => transactionTypeSelectHandler(e)}
+              value={type}
+            />
+            <SelectInput
+              label="Category"
+              options={filterCatArr}
+              onChangeHandler={(e) => categoryTypeSelectHandler(e)}
+            />
             <DatepickerInput />
             <TextInput label="Amount" />
             <TextInput label="Notes" />
