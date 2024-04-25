@@ -9,7 +9,10 @@ import Modal from "../components/Modal";
 
 import Transaction from "../components/forms/Transaction";
 
-import { getUserIncome } from "../utility/transaction/transaction-api";
+import {
+  getUserExpense,
+  getUserIncome,
+} from "../utility/transaction/transaction-api";
 
 import PlusSymbol from "../assets/plusSymbol.svg?react";
 
@@ -32,11 +35,10 @@ const UserDashBoard = ({ params }) => {
     (async () => {
       const getTotalIncome = await getUserIncome(user, accessToken);
       setTotalIncome(getTotalIncome.data.amount);
+
+      const getTotalExpense = await getUserExpense(user, accessToken);
+      setTotalExpense(getTotalExpense.data.amount);
     })();
-
-    // add in call later to get totalExpenses
-
-    setTotalExpense(5623);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

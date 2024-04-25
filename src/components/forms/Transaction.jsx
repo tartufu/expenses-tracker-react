@@ -8,7 +8,17 @@ import { useState, useEffect } from "react";
 
 import { transactionTypesArr } from "../../utility/constants";
 
+import {
+  addUserExpense,
+  addUserIncome,
+} from "../../utility/transaction/transaction-api";
+
+import { transactionType } from "../../utility/constants";
+
 const Transaction = () => {
+  const user = useSelector((state) => state.user.username);
+  const accessToken = useSelector((state) => state.user.token.access);
+
   const categoryTypesArr = useSelector((state) => state.transaction.type);
   const [filterCatArr, setFilterCatArr] = useState([]);
 
@@ -29,7 +39,16 @@ const Transaction = () => {
 
   const submitBtnHandler = (e) => {
     e.preventDefault();
-    alert("PING");
+    const postBody = { category, date, amount, notes, label };
+    try {
+      console.log(type);
+      if (type === transactionType.expense)
+        addUserExpense(user, postBody, accessToken);
+      if (type === transactionType.income)
+        addUserIncome(user, postBody, accessToken);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useEffect(() => {
@@ -37,6 +56,7 @@ const Transaction = () => {
       (category) => category.transaction_type === type.toUpperCase()
     );
     setFilterCatArr(filteredCategoryArr);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type]);
 
   return (
@@ -84,7 +104,7 @@ const Transaction = () => {
             />
             <Input
               label="Label (Optional)"
-              type="number"
+              type="text"
               name="label"
               value={label}
               onChangeHandler={(e) => setLabel(e.target.value)}
