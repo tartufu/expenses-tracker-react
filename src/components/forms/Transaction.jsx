@@ -1,4 +1,4 @@
-import TextInput from "../TextInput";
+import Input from "../Input";
 import SelectInput from "../SelectInput";
 import Button from "../Button";
 import DatepickerInput from "../DatepickerInput";
@@ -10,12 +10,26 @@ import { transactionTypesArr } from "../../utility/constants";
 
 const Transaction = () => {
   const categoryTypesArr = useSelector((state) => state.transaction.type);
-  const [type, setType] = useState("");
   const [filterCatArr, setFilterCatArr] = useState([]);
 
-  const transactionTypeSelectHandler = (e) => {
-    alert(e.target.value);
-    setType(e.target.value);
+  const [type, setType] = useState("");
+  const [category, setCategory] = useState("");
+  const [date, setDate] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+  });
+  const [amount, setAmount] = useState(0);
+  const [notes, setNotes] = useState("");
+  const [label, setLabel] = useState("");
+
+  const amountChangeHandler = (e) => {
+    if (!parseInt(e.target.value)) return;
+    setAmount(parseInt(e.target.value));
+  };
+
+  const submitBtnHandler = (e) => {
+    e.preventDefault();
+    alert("PING");
   };
 
   useEffect(() => {
@@ -24,8 +38,6 @@ const Transaction = () => {
     );
     setFilterCatArr(filteredCategoryArr);
   }, [type]);
-
-  const categoryTypeSelectHandler = (e) => alert(e.target.value);
 
   return (
     <div>
@@ -40,26 +52,51 @@ const Transaction = () => {
             <SelectInput
               label="Type"
               options={transactionTypesArr}
-              onChangeHandler={(e) => transactionTypeSelectHandler(e)}
+              onChangeHandler={(e) => setType(e.target.value)}
               value={type}
             />
             <SelectInput
               label="Category"
               options={filterCatArr}
-              onChangeHandler={(e) => categoryTypeSelectHandler(e)}
+              onChangeHandler={(e) => setCategory(e.target.value)}
+              value={category}
             />
-            <DatepickerInput />
-            <TextInput label="Amount" />
-            <TextInput label="Notes" />
-            <TextInput label="Label" />
+            <DatepickerInput
+              value={date}
+              onChangeHandler={(e) => {
+                setDate(e);
+                console.log(e);
+              }}
+            />
+            <Input
+              label="Amount"
+              type="number"
+              name="amount"
+              value={amount}
+              onChangeHandler={(e) => amountChangeHandler(e)}
+            />
+            <Input
+              label="Notes"
+              type="text"
+              name="notes"
+              value={notes}
+              onChangeHandler={(e) => setNotes(e.target.value)}
+            />
+            <Input
+              label="Label (Optional)"
+              type="number"
+              name="label"
+              value={label}
+              onChangeHandler={(e) => setLabel(e.target.value)}
+            />
             <div className="mt-4 flex justify-end">
               <Button
                 buttonText="Submit"
                 className="btn btn-success text-white"
                 clickBtnHandler={(e) => {
-                  e.preventDefault();
-                  alert("PING");
+                  submitBtnHandler(e);
                 }}
+                svg={null}
               />
             </div>
           </div>

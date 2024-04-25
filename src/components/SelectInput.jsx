@@ -15,7 +15,7 @@ const SelectInput = ({ label, options, onChangeHandler, value }) => {
           onChange={onChangeHandler}
           value={value}
         >
-          <option hidden selected>
+          <option hidden value="">
             Select an option
           </option>
           {options.map((option) => (

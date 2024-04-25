@@ -11,6 +11,8 @@ import Transaction from "../components/forms/Transaction";
 
 import { getUserIncome } from "../utility/transaction/transaction-api";
 
+import PlusSymbol from "../assets/plusSymbol.svg?react";
+
 const UserDashBoard = ({ params }) => {
   const { user } = params;
 
@@ -55,6 +57,7 @@ const UserDashBoard = ({ params }) => {
               clickBtnHandler={() => {
                 setOpen(!open);
               }}
+              svg={PlusSymbol}
             />
           </div>
 
