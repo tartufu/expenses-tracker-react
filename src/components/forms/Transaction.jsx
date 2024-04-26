@@ -14,6 +14,7 @@ import {
 } from "../../utility/transaction/transaction-api";
 
 import { transactionType } from "../../utility/constants";
+import { countDecimalPlaces } from "../../utility/helperFuncs";
 
 const Transaction = () => {
   const user = useSelector((state) => state.user.username);
@@ -33,8 +34,11 @@ const Transaction = () => {
   const [label, setLabel] = useState("");
 
   const amountChangeHandler = (e) => {
-    if (!parseInt(e.target.value)) return;
-    setAmount(parseInt(e.target.value));
+    let input = e.target.value;
+
+    if (countDecimalPlaces(e.target.value) > 2) return;
+
+    setAmount(input);
   };
 
   const submitBtnHandler = (e) => {
@@ -93,6 +97,7 @@ const Transaction = () => {
               type="number"
               name="amount"
               value={amount}
+              step="0.01"
               onChangeHandler={(e) => amountChangeHandler(e)}
             />
             <Input
