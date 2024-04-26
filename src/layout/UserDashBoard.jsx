@@ -24,8 +24,8 @@ const UserDashBoard = ({ params }) => {
   console.log(user);
 
   const [totalIncome, setTotalIncome] = useState(0);
-  const [totalExpense, setTotalExpense] = useState(3455);
-  const [totalBalance, setTotalBalance] = useState(3455);
+  const [totalExpense, setTotalExpense] = useState(0);
+  const [totalBalance, setTotalBalance] = useState(0);
 
   const [open, setOpen] = useState(false);
 

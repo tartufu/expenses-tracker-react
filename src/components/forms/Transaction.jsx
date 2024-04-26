@@ -90,7 +90,7 @@ const Transaction = () => {
             <DatepickerInput
               value={date}
               onChangeHandler={(e) => {
-                setDate(e);
+                setDate(new Date(e));
               }}
             />
             <Input

@@ -44,19 +44,3 @@ const TransactionTable = () => {
 };
 
 export default TransactionTable;
-// className="w-96"
-// date, amount, type, category, notes
-
-// {
-//     "id": "af303dab-bbba-4787-ba9b-f360d6cf3994",
-//     "user_id_id": 1,
-//     "amount": 110,
-//     "date": "2024-04-26T06:55:44.115000Z",
-//     "category": "Bills & Fees",
-//     "notes": "Parking Fees",
-//     "labels": "",
-//     "is_monthly_recurrring": false,
-//     "created_at": "2024-04-26T06:55:55.498425Z",
-//     "type": "Expense",
-//     "is_deleted": false
-// }
