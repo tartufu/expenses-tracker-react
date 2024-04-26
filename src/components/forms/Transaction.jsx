@@ -91,7 +91,6 @@ const Transaction = () => {
               value={date}
               onChangeHandler={(e) => {
                 setDate(e);
-                console.log(e);
               }}
             />
             <Input

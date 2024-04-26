@@ -9,6 +9,8 @@ import Modal from "../components/Modal";
 
 import Transaction from "../components/forms/Transaction";
 
+import TransactionTable from "./TransactionsTable";
+
 import {
   getUserExpense,
   getUserIncome,
@@ -75,6 +77,10 @@ const UserDashBoard = ({ params }) => {
               textColor="text-red-500"
             />
             <StatBox title="Balance" value={totalBalance} />
+          </div>
+
+          <div className="mt-4">
+            <TransactionTable />
           </div>
 
           <Modal open={open} onClose={() => setOpen(false)}>

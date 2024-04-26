@@ -18,3 +18,14 @@ export const countDecimalPlaces = (number) => {
   const decimalPart = match[1] || "";
   return decimalPart.length;
 };
+
+export const formatDateDDMMYYYY = (dateString) => {
+  const date = new Date(dateString);
+
+  // Format the date as desired (e.g., "MM/DD/YYYY hh:mm:ss")
+  const formattedDate = `${date.getDate()}/${
+    date.getMonth() + 1
+  }/${date.getFullYear()}`;
+
+  return formattedDate;
+};

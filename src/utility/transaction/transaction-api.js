@@ -87,3 +87,22 @@ export const getTransactionTypes = async () => {
     throw new Error(errMsg);
   }
 };
+
+export const getAllTransactions = async (user, accessToken) => {
+  const header = {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
+
+  try {
+    const response = await axios.get(
+      `${baseUrl}/${user}/get-all-transaction`,
+      header
+    );
+    return response.data;
+  } catch (error) {
+    const errMsg = error.response.data.error;
+    throw new Error(errMsg);
+  }
+};
