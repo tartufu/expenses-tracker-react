@@ -2,6 +2,7 @@ import Input from "../Input";
 import SelectInput from "../SelectInput";
 import Button from "../Button";
 import DatepickerInput from "../DatepickerInput";
+import Toggle from "../Toggle";
 
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
@@ -29,9 +30,10 @@ const Transaction = () => {
     startDate: new Date(),
     endDate: new Date(),
   });
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState("");
   const [notes, setNotes] = useState("");
   const [label, setLabel] = useState("");
+  const [isMonthly, setIsMonthly] = useState(false);
 
   const amountChangeHandler = (e) => {
     let input = e.target.value;
@@ -43,7 +45,7 @@ const Transaction = () => {
 
   const submitBtnHandler = (e) => {
     e.preventDefault();
-    const postBody = { category, date, amount, notes, label };
+    const postBody = { type, category, date, amount, notes, label, isMonthly };
     try {
       console.log(type);
       if (type === transactionType.expense)
@@ -114,6 +116,13 @@ const Transaction = () => {
               value={label}
               onChangeHandler={(e) => setLabel(e.target.value)}
             />
+
+            <Toggle
+              label="Recurring Monthly Transaction"
+              checked={isMonthly}
+              toggleClickHandler={() => setIsMonthly(!isMonthly)}
+            />
+
             <div className="mt-4 flex justify-end">
               <Button
                 buttonText="Submit"
