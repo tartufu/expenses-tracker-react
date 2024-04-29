@@ -9,8 +9,6 @@ export const addUserIncome = async (user, postBody, accessToken) => {
     },
   };
 
-  console.log(header);
-
   try {
     const response = await axios.post(
       `${baseUrl}/${user}/add-income`,
@@ -71,6 +69,26 @@ export const getUserExpense = async (user, accessToken) => {
 
   try {
     const response = await axios.get(`${baseUrl}/${user}/get-expense`, header);
+    return response.data;
+  } catch (error) {
+    const errMsg = error.response.data.error;
+    throw new Error(errMsg);
+  }
+};
+
+export const deleteUserTransaction = async (user, accessToken, postBody) => {
+  const header = {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
+
+  try {
+    const response = await axios.post(
+      `${baseUrl}/${user}/delete-transaction`,
+      postBody,
+      header
+    );
     return response.data;
   } catch (error) {
     const errMsg = error.response.data.error;
