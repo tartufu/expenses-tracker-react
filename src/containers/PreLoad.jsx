@@ -22,6 +22,10 @@ const Preload = ({ children }) => {
 
   useEffect(() => {
     (async () => {
+      if (!accessToken) {
+        setDataLoaded(true);
+        return;
+      }
       const transactionTypes = await getTransactionTypes();
       console.log(transactionTypes);
       dispatch(setTransactionTypeArr(transactionTypes.data));
