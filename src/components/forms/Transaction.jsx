@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 import Input from "../Input";
 import SelectInput from "../SelectInput";
 import Button from "../Button";
@@ -17,7 +19,7 @@ import {
 import { transactionType } from "../../utility/constants";
 import { countDecimalPlaces } from "../../utility/helperFuncs";
 
-const Transaction = () => {
+const Transaction = ({ closeModal }) => {
   const user = useSelector((state) => state.user.username);
   const accessToken = useSelector((state) => state.user.token.access);
 
@@ -52,9 +54,25 @@ const Transaction = () => {
         addUserExpense(user, postBody, accessToken);
       if (type === transactionType.income)
         addUserIncome(user, postBody, accessToken);
+
+      resetModalState();
     } catch (e) {
       console.log(e);
     }
+  };
+
+  const resetModalState = () => {
+    setType("");
+    setCategory("");
+    setDate({
+      startDate: new Date(),
+      endDate: new Date(),
+    });
+    setAmount("");
+    setNotes("");
+    setLabel("");
+    setIsMonthly(false);
+    closeModal();
   };
 
   useEffect(() => {
@@ -90,7 +108,7 @@ const Transaction = () => {
             <DatepickerInput
               value={date}
               onChangeHandler={(e) => {
-                setDate(new Date(e));
+                setDate(e);
               }}
             />
             <Input
@@ -140,3 +158,7 @@ const Transaction = () => {
 };
 
 export default Transaction;
+
+Transaction.propTypes = {
+  closeModal: PropTypes.func.isRequired,
+};

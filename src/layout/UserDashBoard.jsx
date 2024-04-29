@@ -84,7 +84,7 @@ const UserDashBoard = ({ params }) => {
           </div>
 
           <Modal open={open} onClose={() => setOpen(false)}>
-            <Transaction />
+            <Transaction closeModal={() => setOpen(false)} />
           </Modal>
         </div>
       </div>
