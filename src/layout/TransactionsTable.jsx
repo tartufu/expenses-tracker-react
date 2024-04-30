@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 
@@ -12,7 +14,7 @@ import { setTransactions } from "../features/transaction/transactionSlice";
 import Modal from "../components/Modal";
 import Button from "../components/Button";
 
-const TransactionTable = () => {
+const TransactionTable = ({ selectEditHandler }) => {
   const dispatch = useDispatch();
 
   const allTransactions = useSelector(
@@ -85,7 +87,7 @@ const TransactionTable = () => {
                   <div className="flex">
                     <span
                       className="cursor-pointer mr-2"
-                      onClick={() => alert("ping")}
+                      onClick={() => selectEditHandler(transaction.id)}
                     >
                       <Edit />
                     </span>
@@ -133,3 +135,7 @@ const TransactionTable = () => {
 };
 
 export default TransactionTable;
+
+TransactionTable.propTypes = {
+  selectEditHandler: PropTypes.func.isRequired,
+};

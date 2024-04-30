@@ -14,12 +14,19 @@ import { transactionTypesArr } from "../../utility/constants";
 import {
   addUserExpense,
   addUserIncome,
+  editUserExpense,
+  editUserIncome,
 } from "../../utility/transaction/transaction-api";
 
 import { transactionType } from "../../utility/constants";
 import { countDecimalPlaces } from "../../utility/helperFuncs";
 
-const Transaction = ({ closeModal }) => {
+const Transaction = ({
+  closeModal,
+  isEditingTransaction,
+  transaction,
+  resetSelectedId,
+}) => {
   const user = useSelector((state) => state.user.username);
   const accessToken = useSelector((state) => state.user.token.access);
 
@@ -61,6 +68,33 @@ const Transaction = ({ closeModal }) => {
     }
   };
 
+  const editBtnHandler = (e) => {
+    e.preventDefault();
+    const id = transaction.id;
+    const postBody = {
+      id,
+      type,
+      category,
+      date,
+      amount,
+      notes,
+      label,
+      isMonthly,
+    };
+
+    try {
+      console.log(type);
+      if (type === transactionType.expense)
+        editUserExpense(user, postBody, accessToken);
+      if (type === transactionType.income)
+        editUserIncome(user, postBody, accessToken);
+
+      resetModalState();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const resetModalState = () => {
     setType("");
     setCategory("");
@@ -72,16 +106,31 @@ const Transaction = ({ closeModal }) => {
     setNotes("");
     setLabel("");
     setIsMonthly(false);
+    resetSelectedId();
     closeModal();
   };
 
   useEffect(() => {
     const filteredCategoryArr = categoryTypesArr.filter(
-      (category) => category.transaction_type === type.toUpperCase()
+      (category) => category.transaction_type === type?.toUpperCase()
     );
     setFilterCatArr(filteredCategoryArr);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type]);
+
+  useEffect(() => {
+    if (Object.keys(transaction).length === 0) return;
+    setType(transaction?.type);
+    setCategory(transaction?.category);
+    setDate({
+      startDate: new Date(transaction?.date),
+      endDate: new Date(transaction?.date),
+    });
+    setAmount(transaction?.amount);
+    setNotes(transaction?.notes);
+    setLabel(transaction?.labels);
+    setIsMonthly(transaction?.is_monthly_recurrring);
+  }, [transaction]);
 
   return (
     <div>
@@ -141,14 +190,27 @@ const Transaction = ({ closeModal }) => {
             />
 
             <div className="mt-4 flex justify-end">
-              <Button
-                buttonText="Submit"
-                className="btn btn-success text-white"
-                clickBtnHandler={(e) => {
-                  submitBtnHandler(e);
-                }}
-                svg={null}
-              />
+              {!isEditingTransaction && (
+                <Button
+                  buttonText="Submit"
+                  className="btn btn-success text-white"
+                  clickBtnHandler={(e) => {
+                    submitBtnHandler(e);
+                  }}
+                  svg={null}
+                />
+              )}
+
+              {isEditingTransaction && (
+                <Button
+                  buttonText="Update"
+                  className="btn btn-success text-white"
+                  clickBtnHandler={(e) => {
+                    editBtnHandler(e);
+                  }}
+                  svg={null}
+                />
+              )}
             </div>
           </div>
         </div>
@@ -161,4 +223,19 @@ export default Transaction;
 
 Transaction.propTypes = {
   closeModal: PropTypes.func.isRequired,
+  isEditingTransaction: PropTypes.bool.isRequired,
+  resetSelectedId: PropTypes.func,
+  transaction: PropTypes.shape({
+    id: PropTypes.string,
+    user_id_id: PropTypes.number,
+    amount: PropTypes.number,
+    date: PropTypes.string,
+    category: PropTypes.string,
+    notes: PropTypes.string,
+    labels: PropTypes.string,
+    is_monthly_recurrring: PropTypes.bool,
+    created_at: PropTypes.string,
+    type: PropTypes.string,
+    is_deleted: PropTypes.bool,
+  }),
 };

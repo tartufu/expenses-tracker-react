@@ -3,11 +3,7 @@ import axios from "axios";
 const baseUrl = "http://localhost:8000/api";
 
 export const addUserIncome = async (user, postBody, accessToken) => {
-  const header = {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  };
+  const header = createHeaderWithBearerToken(accessToken);
 
   try {
     const response = await axios.post(
@@ -22,12 +18,24 @@ export const addUserIncome = async (user, postBody, accessToken) => {
   }
 };
 
+export const editUserIncome = async (user, postBody, accessToken) => {
+  const header = createHeaderWithBearerToken(accessToken);
+
+  try {
+    const response = await axios.patch(
+      `${baseUrl}/${user}/edit-income`,
+      postBody,
+      header
+    );
+    return response.data;
+  } catch (error) {
+    const errMsg = error.response.data.error;
+    throw new Error(errMsg);
+  }
+};
+
 export const getUserIncome = async (user, accessToken) => {
-  const header = {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  };
+  const header = createHeaderWithBearerToken(accessToken);
 
   try {
     const response = await axios.get(`${baseUrl}/${user}/get-income`, header);
@@ -39,13 +47,7 @@ export const getUserIncome = async (user, accessToken) => {
 };
 
 export const addUserExpense = async (user, postBody, accessToken) => {
-  const header = {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  };
-
-  console.log(user, postBody, accessToken);
+  const header = createHeaderWithBearerToken(accessToken);
 
   try {
     const response = await axios.post(
@@ -60,12 +62,24 @@ export const addUserExpense = async (user, postBody, accessToken) => {
   }
 };
 
+export const editUserExpense = async (user, postBody, accessToken) => {
+  const header = createHeaderWithBearerToken(accessToken);
+
+  try {
+    const response = await axios.patch(
+      `${baseUrl}/${user}/edit-expense`,
+      postBody,
+      header
+    );
+    return response.data;
+  } catch (error) {
+    const errMsg = error.response.data.error;
+    throw new Error(errMsg);
+  }
+};
+
 export const getUserExpense = async (user, accessToken) => {
-  const header = {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  };
+  const header = createHeaderWithBearerToken(accessToken);
 
   try {
     const response = await axios.get(`${baseUrl}/${user}/get-expense`, header);
@@ -77,11 +91,7 @@ export const getUserExpense = async (user, accessToken) => {
 };
 
 export const deleteUserTransaction = async (user, accessToken, postBody) => {
-  const header = {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  };
+  const header = createHeaderWithBearerToken(accessToken);
 
   try {
     const response = await axios.post(
@@ -107,11 +117,7 @@ export const getTransactionTypes = async () => {
 };
 
 export const getAllTransactions = async (user, accessToken) => {
-  const header = {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  };
+  const header = createHeaderWithBearerToken(accessToken);
 
   try {
     const response = await axios.get(
@@ -123,4 +129,12 @@ export const getAllTransactions = async (user, accessToken) => {
     const errMsg = error.response.data.error;
     throw new Error(errMsg);
   }
+};
+
+const createHeaderWithBearerToken = (accessToken) => {
+  return {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
 };

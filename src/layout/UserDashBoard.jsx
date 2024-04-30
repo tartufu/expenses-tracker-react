@@ -21,17 +21,34 @@ import PlusSymbol from "../assets/plusSymbol.svg?react";
 const UserDashBoard = ({ params }) => {
   const { user } = params;
 
-  console.log(user);
-
   const [totalIncome, setTotalIncome] = useState(0);
   const [totalExpense, setTotalExpense] = useState(0);
   const [totalBalance, setTotalBalance] = useState(0);
 
   const [open, setOpen] = useState(false);
 
-  // const [amount, setAmount] = useState(0);
+  const [isEditingTransaction, setIsEditingTransaction] = useState(false);
+  const [selectedId, setSelectedId] = useState("");
+  const [transaction, setTransaction] = useState({});
 
   const accessToken = useSelector((state) => state.user.token.access);
+  const allTransactions = useSelector(
+    (state) => state.transaction.transactions
+  );
+
+  const selectEditHandler = (id) => {
+    setIsEditingTransaction(true);
+    setSelectedId(id);
+    setOpen(true);
+  };
+
+  const getSelectedTransaction = () => {
+    const getSelectedTransaction = allTransactions.filter(
+      (transaction) => transaction.id === selectedId
+    );
+    console.log(getSelectedTransaction);
+    return getSelectedTransaction[0] || {};
+  };
 
   useEffect(() => {
     (async () => {
@@ -48,6 +65,11 @@ const UserDashBoard = ({ params }) => {
   useEffect(() => {
     setTotalBalance(totalIncome - totalExpense);
   }, [totalIncome, totalExpense]);
+
+  useEffect(() => {
+    setTransaction(getSelectedTransaction());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedId]);
 
   return (
     <>
@@ -80,11 +102,16 @@ const UserDashBoard = ({ params }) => {
           </div>
 
           <div className="mt-4">
-            <TransactionTable />
+            <TransactionTable selectEditHandler={selectEditHandler} />
           </div>
 
           <Modal open={open} onClose={() => setOpen(false)}>
-            <Transaction closeModal={() => setOpen(false)} />
+            <Transaction
+              closeModal={() => setOpen(false)}
+              isEditingTransaction={isEditingTransaction}
+              transaction={transaction}
+              resetSelectedId={() => setSelectedId("")}
+            />
           </Modal>
         </div>
       </div>
