@@ -6,7 +6,7 @@ import Button from "../Button";
 import DatepickerInput from "../DatepickerInput";
 import Toggle from "../Toggle";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 
 import { transactionTypesArr } from "../../utility/constants";
@@ -21,14 +21,20 @@ import {
 import { transactionType } from "../../utility/constants";
 import { countDecimalPlaces } from "../../utility/helperFuncs";
 
+import { setTransactions } from "../../features/transaction/transactionSlice";
+
 const Transaction = ({
   closeModal,
   isEditingTransaction,
   transaction,
   resetSelectedId,
 }) => {
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user.username);
   const accessToken = useSelector((state) => state.user.token.access);
+  const allTransactions = useSelector(
+    (state) => state.transaction.transactions
+  );
 
   const categoryTypesArr = useSelector((state) => state.transaction.type);
   const [filterCatArr, setFilterCatArr] = useState([]);
@@ -52,15 +58,24 @@ const Transaction = ({
     setAmount(input);
   };
 
-  const submitBtnHandler = (e) => {
+  const submitBtnHandler = async (e) => {
     e.preventDefault();
     const postBody = { type, category, date, amount, notes, label, isMonthly };
+    let newRecord;
     try {
       console.log(type);
       if (type === transactionType.expense)
-        addUserExpense(user, postBody, accessToken);
+        newRecord = await addUserExpense(user, postBody, accessToken);
       if (type === transactionType.income)
-        addUserIncome(user, postBody, accessToken);
+        newRecord = await addUserIncome(user, postBody, accessToken);
+
+      const newTransactionsArr = [newRecord.data, ...allTransactions];
+
+      console.log(newTransactionsArr);
+
+      // debugger;
+      dispatch(setTransactions(newTransactionsArr));
+      // console.log(newRecord.data);
 
       resetModalState();
     } catch (e) {
@@ -68,7 +83,7 @@ const Transaction = ({
     }
   };
 
-  const editBtnHandler = (e) => {
+  const editBtnHandler = async (e) => {
     e.preventDefault();
     const id = transaction.id;
     const postBody = {
@@ -82,14 +97,32 @@ const Transaction = ({
       isMonthly,
     };
 
+    let updatedRecord;
+
     try {
       console.log(type);
-      if (type === transactionType.expense)
-        editUserExpense(user, postBody, accessToken);
-      if (type === transactionType.income)
-        editUserIncome(user, postBody, accessToken);
+      if (type === transactionType.expense) {
+        updatedRecord = await editUserExpense(user, postBody, accessToken);
+        updatedRecord = { ...updatedRecord.data.user_expense };
+      }
+      if (type === transactionType.income) {
+        updatedRecord = await editUserIncome(user, postBody, accessToken);
+        updatedRecord = { ...updatedRecord.data.user_income };
+      }
 
       resetModalState();
+
+      console.log(updatedRecord);
+
+      const updatedRecordIndex = allTransactions.findIndex(
+        (transaction) => transaction.id === updatedRecord.id
+      );
+
+      console.log(updatedRecordIndex);
+
+      const updatedTransactionsArr = [...allTransactions];
+      updatedTransactionsArr[updatedRecordIndex] = updatedRecord;
+      dispatch(setTransactions(updatedTransactionsArr));
     } catch (e) {
       console.log(e);
     }
@@ -129,7 +162,7 @@ const Transaction = ({
     setAmount(transaction?.amount);
     setNotes(transaction?.notes);
     setLabel(transaction?.labels);
-    setIsMonthly(transaction?.is_monthly_recurrring);
+    setIsMonthly(transaction?.is_monthly_recurring);
   }, [transaction]);
 
   return (
@@ -233,7 +266,7 @@ Transaction.propTypes = {
     category: PropTypes.string,
     notes: PropTypes.string,
     labels: PropTypes.string,
-    is_monthly_recurrring: PropTypes.bool,
+    is_monthly_recurring: PropTypes.bool,
     created_at: PropTypes.string,
     type: PropTypes.string,
     is_deleted: PropTypes.bool,

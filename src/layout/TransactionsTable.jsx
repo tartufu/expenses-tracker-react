@@ -78,7 +78,7 @@ const TransactionTable = ({ selectEditHandler }) => {
               <tr key={transaction.id}>
                 <td>{formatDateDDMMYYYY(transaction.date)}</td>
                 <td className={textColorStyling}>
-                  <strong>$ {transaction.amount.toFixed(2)}</strong>
+                  <strong>$ {parseFloat(transaction.amount).toFixed(2)}</strong>
                 </td>
                 <td>{transaction.type}</td>
                 <td>{transaction.category}</td>
