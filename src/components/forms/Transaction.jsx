@@ -169,7 +169,7 @@ const Transaction = ({
     <div>
       <div className="mx-auto my-4 w-96">
         <h3 className="text-lg font-black text-gray-800 text-center">
-          Add Transaction
+          {isEditingTransaction ? "Edit" : "Add "} Transaction
         </h3>
       </div>
       <form>
@@ -180,6 +180,7 @@ const Transaction = ({
               options={transactionTypesArr}
               onChangeHandler={(e) => setType(e.target.value)}
               value={type}
+              shouldDisable={isEditingTransaction ? true : false}
             />
             <SelectInput
               label="Category"

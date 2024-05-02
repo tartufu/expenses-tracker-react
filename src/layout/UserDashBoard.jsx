@@ -82,6 +82,7 @@ const UserDashBoard = ({ params }) => {
               className="btn btn-wide btn-success text-white mr-4"
               clickBtnHandler={() => {
                 setOpen(!open);
+                setIsEditingTransaction(false);
               }}
               svg={PlusSymbol}
             />
