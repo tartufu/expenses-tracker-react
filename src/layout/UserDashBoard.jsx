@@ -94,7 +94,6 @@ const UserDashBoard = ({ params }) => {
     transactionArr = transactionArr.filter(
       (transaction) => transaction.type === type
     );
-    console.log(transactionArr);
 
     let totalValue = transactionArr.reduce(
       (accumulator, income) => accumulator + income.amount,

@@ -19,8 +19,6 @@ const AuthContainer = ({ children }) => {
 
   const dispatch = useDispatch();
 
-  //TODO: refactor the Auth container section
-
   const isAccessTokenExpired = (accessToken) => {
     const tokenData = decodeJwtToken(accessToken);
 
@@ -53,7 +51,7 @@ const AuthContainer = ({ children }) => {
   }, [accessToken]);
 
   useEffect(() => {
-    if (!refreshToken || accessToken) return;
+    if (!refreshToken || !accessToken) return;
 
     if (isRefreshTokenExpired(refreshToken)) {
       dispatch(clearJwtToken());
@@ -75,8 +73,6 @@ const AuthContainer = ({ children }) => {
       const response = await getUserDetails(accessToken, userId);
       dispatch(setUserDetails(response.data.data));
     })();
-
-    console.log(userId);
   }, []);
 
   return <>{children}</>;
