@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import Sidebar from "../components/SideBar";
 import StatBox from "../components/StatBox";
@@ -14,18 +14,26 @@ import TransactionTable from "./TransactionsTable";
 import {
   getUserExpense,
   getUserIncome,
+  deleteUserTransaction,
 } from "../utility/transaction/transaction-api";
+
+import { setTransactions } from "../features/transaction/transactionSlice";
 
 import PlusSymbol from "../assets/plusSymbol.svg?react";
 
 const UserDashBoard = ({ params }) => {
   const { user } = params;
 
+  const dispatch = useDispatch();
+
   const [totalIncome, setTotalIncome] = useState(0);
   const [totalExpense, setTotalExpense] = useState(0);
   const [totalBalance, setTotalBalance] = useState(0);
 
-  const [open, setOpen] = useState(false);
+  const [modalState, setModalState] = useState({
+    transactionModal: false,
+    deleteModal: false,
+  });
 
   const [isEditingTransaction, setIsEditingTransaction] = useState(false);
   const [selectedId, setSelectedId] = useState("");
@@ -39,15 +47,50 @@ const UserDashBoard = ({ params }) => {
   const selectEditHandler = (id) => {
     setIsEditingTransaction(true);
     setSelectedId(id);
-    setOpen(true);
+    toggleModal("transactionModal", true);
+  };
+
+  const selectDeleteHandler = (id) => {
+    setSelectedId(id);
+    setTransaction(getSelectedTransaction());
+    toggleModal("deleteModal", true);
+  };
+
+  const deleteTransactionHandler = async () => {
+    const { id, type } = transaction;
+    const postBody = { id, type };
+
+    const deletedRecord = await deleteUserTransaction(
+      user,
+      accessToken,
+      postBody
+    );
+
+    let updatedTransactionsArr = [...allTransactions];
+    updatedTransactionsArr = updatedTransactionsArr.filter(
+      (transaction) => transaction.id !== deletedRecord.data.id
+    );
+
+    dispatch(setTransactions(updatedTransactionsArr));
+    toggleModal("deleteModal", false);
   };
 
   const getSelectedTransaction = () => {
     const getSelectedTransaction = allTransactions.filter(
       (transaction) => transaction.id === selectedId
     );
-    console.log(getSelectedTransaction);
     return getSelectedTransaction[0] || {};
+  };
+
+  const toggleModal = (modalType, modalState, isEditingTransaction = false) => {
+    setModalState((state) => {
+      return {
+        ...state,
+        [modalType]: modalState,
+      };
+    });
+
+    if (isEditingTransaction) console.log(true);
   };
 
   useEffect(() => {
@@ -64,7 +107,7 @@ const UserDashBoard = ({ params }) => {
 
   useEffect(() => {
     setTotalBalance(totalIncome - totalExpense);
-  }, [totalIncome, totalExpense]);
+  }, [totalIncome, totalExpense, allTransactions]);
 
   useEffect(() => {
     setTransaction(getSelectedTransaction());
@@ -81,7 +124,7 @@ const UserDashBoard = ({ params }) => {
               buttonText="Add Transaction"
               className="btn btn-wide btn-success text-white mr-4"
               clickBtnHandler={() => {
-                setOpen(!open);
+                toggleModal("transactionModal", true);
                 setIsEditingTransaction(false);
               }}
               svg={PlusSymbol}
@@ -103,16 +146,44 @@ const UserDashBoard = ({ params }) => {
           </div>
 
           <div className="mt-4">
-            <TransactionTable selectEditHandler={selectEditHandler} />
+            <TransactionTable
+              selectEditHandler={selectEditHandler}
+              selectDeleteHandler={selectDeleteHandler}
+            />
           </div>
 
-          <Modal open={open} onClose={() => setOpen(false)}>
+          <Modal
+            open={modalState.transactionModal}
+            onClose={() => toggleModal("transactionModal", false)}
+          >
             <Transaction
-              closeModal={() => setOpen(false)}
+              closeModal={() => toggleModal("transactionModal", false)}
               isEditingTransaction={isEditingTransaction}
               transaction={transaction}
               resetSelectedId={() => setSelectedId("")}
             />
+          </Modal>
+
+          <Modal
+            open={modalState.deleteModal}
+            onClose={() => toggleModal(!"deleteModal", false)}
+          >
+            <div className="text-center">
+              <p className="font-bold">Delete Transanction</p>
+              <p>Do you really want to delete this transaction?</p>
+              <div className="flex justify-around mt-4">
+                <Button
+                  buttonText="Cancel"
+                  clickBtnHandler={() => toggleModal("deleteModal", false)}
+                  className="btn btn-sm btn-active text-white"
+                />
+                <Button
+                  buttonText="Delete"
+                  clickBtnHandler={() => deleteTransactionHandler()}
+                  className="btn btn-sm btn-error text-white"
+                />
+              </div>
+            </div>
           </Modal>
         </div>
       </div>
