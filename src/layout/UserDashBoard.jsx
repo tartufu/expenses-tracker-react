@@ -11,11 +11,7 @@ import Transaction from "../components/forms/Transaction";
 
 import TransactionTable from "./TransactionsTable";
 
-import {
-  getUserExpense,
-  getUserIncome,
-  deleteUserTransaction,
-} from "../utility/transaction/transaction-api";
+import { deleteUserTransaction } from "../utility/transaction/transaction-api";
 
 import { setTransactions } from "../features/transaction/transactionSlice";
 
@@ -25,6 +21,11 @@ const UserDashBoard = ({ params }) => {
   const { user } = params;
 
   const dispatch = useDispatch();
+
+  const accessToken = useSelector((state) => state.user.token.access);
+  const allTransactions = useSelector(
+    (state) => state.transaction.transactions
+  );
 
   const [totalIncome, setTotalIncome] = useState(0);
   const [totalExpense, setTotalExpense] = useState(0);
@@ -38,11 +39,6 @@ const UserDashBoard = ({ params }) => {
   const [isEditingTransaction, setIsEditingTransaction] = useState(false);
   const [selectedId, setSelectedId] = useState("");
   const [transaction, setTransaction] = useState({});
-
-  const accessToken = useSelector((state) => state.user.token.access);
-  const allTransactions = useSelector(
-    (state) => state.transaction.transactions
-  );
 
   const selectEditHandler = (id) => {
     setIsEditingTransaction(true);
@@ -93,20 +89,34 @@ const UserDashBoard = ({ params }) => {
     if (isEditingTransaction) console.log(true);
   };
 
+  const calculateTotal = (type) => {
+    let transactionArr = [...allTransactions];
+    transactionArr = transactionArr.filter(
+      (transaction) => transaction.type === type
+    );
+    console.log(transactionArr);
+
+    let totalValue = transactionArr.reduce(
+      (accumulator, income) => accumulator + income.amount,
+      0
+    );
+
+    return totalValue;
+  };
+
   useEffect(() => {
     (async () => {
-      const getTotalIncome = await getUserIncome(user, accessToken);
-      setTotalIncome(getTotalIncome.data.amount);
-
-      const getTotalExpense = await getUserExpense(user, accessToken);
-      setTotalExpense(getTotalExpense.data.amount);
+      setTotalIncome(calculateTotal("Income"));
+      setTotalExpense(calculateTotal("Expense"));
     })();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
+    setTotalIncome(calculateTotal("Income"));
+    setTotalExpense(calculateTotal("Expense"));
     setTotalBalance(totalIncome - totalExpense);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [totalIncome, totalExpense, allTransactions]);
 
   useEffect(() => {
