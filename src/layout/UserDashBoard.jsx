@@ -16,6 +16,7 @@ import { deleteUserTransaction } from "../utility/transaction/transaction-api";
 import { setTransactions } from "../features/transaction/transactionSlice";
 
 import PlusSymbol from "../assets/plusSymbol.svg?react";
+import { transactionType } from "../utility/constants";
 
 const UserDashBoard = ({ params }) => {
   const { user } = params;
@@ -105,15 +106,15 @@ const UserDashBoard = ({ params }) => {
 
   useEffect(() => {
     (async () => {
-      setTotalIncome(calculateTotal("Income"));
-      setTotalExpense(calculateTotal("Expense"));
+      setTotalIncome(calculateTotal(transactionType.income));
+      setTotalExpense(calculateTotal(transactionType.expense));
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    setTotalIncome(calculateTotal("Income"));
-    setTotalExpense(calculateTotal("Expense"));
+    setTotalIncome(calculateTotal(transactionType.income));
+    setTotalExpense(calculateTotal(transactionType.expense));
     setTotalBalance(totalIncome - totalExpense);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [totalIncome, totalExpense, allTransactions]);
@@ -158,6 +159,7 @@ const UserDashBoard = ({ params }) => {
             <TransactionTable
               selectEditHandler={selectEditHandler}
               selectDeleteHandler={selectDeleteHandler}
+              type={transactionType.all}
             />
           </div>
 

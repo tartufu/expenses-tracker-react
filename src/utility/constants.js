@@ -14,4 +14,5 @@ export const transactionTypesArr = [
 export const transactionType = {
   income: "Income",
   expense: "Expense",
+  all: "all",
 };
