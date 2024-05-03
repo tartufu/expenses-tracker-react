@@ -1,9 +1,15 @@
 import Background from "../assets/hero-bg.jpg";
-import { Link } from "wouter";
+import { Link, Redirect } from "wouter";
+
+import { useSelector } from "react-redux";
 
 function HomePage() {
+  const isUserLoggedIn = useSelector((state) => state.user.token.access);
+  const user = useSelector((state) => state.user.username);
+
   return (
     <>
+      {isUserLoggedIn && <Redirect to={`${user}/dashboard`} />}
       <div
         className="hero min-h-screen"
         style={{
