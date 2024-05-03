@@ -1,11 +1,13 @@
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useMediaQuery } from "react-responsive";
 
 import Sidebar from "../components/SideBar";
 import StatBox from "../components/StatBox";
 import Button from "../components/Button";
 import Modal from "../components/Modal";
+import StatBoxMobile from "../components/StatBoxMobile";
 
 import Transaction from "../components/forms/Transaction";
 
@@ -22,6 +24,8 @@ const UserDashBoard = ({ params }) => {
   const { user } = params;
 
   const dispatch = useDispatch();
+
+  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
 
   const accessToken = useSelector((state) => state.user.token.access);
   const allTransactions = useSelector(
@@ -141,19 +145,29 @@ const UserDashBoard = ({ params }) => {
             />
           </div>
 
-          <div className="flex space-x-8 mt-4">
-            <StatBox
-              title="Income"
-              value={totalIncome}
-              textColor="text-green-500"
+          {isTabletOrMobile && (
+            <StatBoxMobile
+              totalExpense={totalExpense}
+              totalIncome={totalIncome}
+              totalBalance={totalBalance}
             />
-            <StatBox
-              title="Expenses"
-              value={totalExpense}
-              textColor="text-red-500"
-            />
-            <StatBox title="Balance" value={totalBalance} />
-          </div>
+          )}
+
+          {!isTabletOrMobile && (
+            <div className="flex flex-wrap space-x-8 mt-4">
+              <StatBox
+                title="Income"
+                value={totalIncome}
+                textColor="text-green-500"
+              />
+              <StatBox
+                title="Expenses"
+                value={totalExpense}
+                textColor="text-red-500"
+              />
+              <StatBox title="Balance" value={totalBalance} />
+            </div>
+          )}
 
           <div className="mt-4">
             <TransactionTable

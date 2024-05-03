@@ -2,6 +2,8 @@ import PropTypes from "prop-types";
 
 import { useSelector } from "react-redux";
 
+import { useMediaQuery } from "react-responsive";
+
 import { formatDateDDMMYYYY } from "../utility/helperFuncs";
 
 import Trash from "../assets/trash.svg?react";
@@ -18,16 +20,18 @@ const TransactionTable = ({
     (state) => state.transaction.transactions
   );
 
+  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
+
   return (
     <div className="overflow-x-auto bg-white rounded-md">
       <table className="table table-zebra">
         <thead className="bg-black">
-          <tr className="text-white w-96">
+          <tr className="text-white max-w-96">
             <th>Date</th>
             <th>Amount</th>
-            <th>Type</th>
-            <th>Category</th>
-            <th className="w-96">Notes</th>
+            {!isTabletOrMobile && <th>Type</th>}
+            {!isTabletOrMobile && <th>Category</th>}
+            <th className="max-w-96">Notes</th>
             {!isReport && <th>Actions</th>}
           </tr>
         </thead>
@@ -49,8 +53,10 @@ const TransactionTable = ({
                       $ {parseFloat(transaction.amount).toFixed(2)}
                     </strong>
                   </td>
-                  <td>{transaction.type}</td>
-                  <td>{transaction.category}</td>
+
+                  {!isTabletOrMobile && <td>{transaction.type}</td>}
+                  {!isTabletOrMobile && <td>{transaction.category}</td>}
+
                   <td>{transaction.notes}</td>
                   {!isReport && (
                     <td>

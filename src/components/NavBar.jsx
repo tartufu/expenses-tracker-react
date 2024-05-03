@@ -5,17 +5,14 @@ import { clearJwtToken } from "../features/user/userSlice";
 
 import HomePageLogo from "../assets/logo-favicon-white.svg?react";
 
+import { useMediaQuery } from "react-responsive";
+
 export default function NavBar() {
   const isUserLoggedIn = useSelector((state) => state.user.token.access);
+  const username = useSelector((state) => state.user.username);
   const dispatch = useDispatch();
 
-  console.log(useSelector((state) => state.user.username));
-
-  const userDashboardUrl = `/${useSelector(
-    (state) => state.user.username
-  )}/dashboard`;
-
-  console.log(userDashboardUrl);
+  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
 
   const logoutBtnHandler = () => {
     dispatch(clearJwtToken());
@@ -32,14 +29,25 @@ export default function NavBar() {
             </Link>
           </div>
           <ul className="flex">
-            {isUserLoggedIn && (
-              <li className="mr-4">
-                <Link to={userDashboardUrl}>
-                  <span className="text-white">Profile</span>
-                </Link>
-              </li>
-            )}
+            {isUserLoggedIn && isTabletOrMobile && (
+              <>
+                <li>
+                  <Link to={`/${username}/income-report`}>
+                    <span className="text-white cursor-pointer pr-2">
+                      Income
+                    </span>
+                  </Link>
+                </li>
 
+                <li>
+                  <Link to={`/${username}/expenses-report`}>
+                    <span className="text-white cursor-pointer pr-2">
+                      Expense
+                    </span>
+                  </Link>
+                </li>
+              </>
+            )}
             <li>
               {isUserLoggedIn ? (
                 <span
